@@ -4,87 +4,34 @@ import java.util.Arrays;
 
 public class TheQueue {
 
-	private static String[] theQueue;
-	private static int numOfItems;
-	private static int queueSize,front,rear;
-	
-	public static void main(String args[]){
-		TheQueue newQueue = new TheQueue(10) ;
-		newQueue.insert("10");
-	
-		newQueue.insert("10");
-		newQueue.insert("15");
-		newQueue.insert("60");
-		newQueue.insert("13");
-		newQueue.insert("56");
-		
-		newQueue.remove();
-		newQueue.remove();
-		
-		newQueue.insert("60");
-		newQueue.insert("13");
-		newQueue.insert("56");
-		newQueue.insert("10");
-		
-		newQueue.remove();
-		newQueue.remove();
-		
-		newQueue.insert("15");
-		newQueue.insert("60");
-		newQueue.insert("13");
-		newQueue.insert("56");
-		newQueue.insert("10");
-		newQueue.insert("15");
-		newQueue.insert("60");
-		newQueue.insert("13");
-		
-		newQueue.remove();
-		newQueue.remove();
-		newQueue.remove();
-		newQueue.remove();
-		newQueue.remove();
-		newQueue.remove();
-		newQueue.peek();
-		
-		newQueue.insert("13");
-		newQueue.insert("15");
-		newQueue.insert("60");
-		newQueue.insert("13");
-		newQueue.insert("56");
-		newQueue.insert("10");
-		newQueue.insert("15");
-		newQueue.insert("60");
-		newQueue.insert("13");
-		displayTheQueue(theQueue);
-	}
+	private static Object[] theQueue;
+	private static int size;
+	private static int CAPACITY,front,rear;
 
-	public TheQueue(int size){
-		queueSize = size;
-		theQueue = new String[queueSize];
-		
+	public TheQueue(int capacity){
+		CAPACITY = capacity;
+		theQueue = new Object[CAPACITY];
 		Arrays.fill(theQueue, "-1");
-		numOfItems=0;
+		size=0;
 		front = 0;
 		rear = 0;
 	}
 	
-	public void insert(String value){
-		
-		if(rear<queueSize){
-			theQueue[numOfItems] = value;
-			numOfItems++;
+	public void insert(Object value){
+		if(rear<CAPACITY){
+			theQueue[size] = value;
+			size++;
 			rear++;
-			
+			System.out.println("Adding :"+value);
 		}
 		else{
 			System.out.println("Ques is full");
 		}
 	}
 	
-	public void priorityInsert(String value){
+	public void priorityInsert(Object value){
 		
-		if(queueSize==0){
-			
+		if(CAPACITY==0){
 			
 		}
 		
@@ -95,31 +42,54 @@ public class TheQueue {
 	
 	
 	public void remove(){
-		if(numOfItems>0){
+		if(size>0){
+			System.out.println("Removing :"+theQueue[front]);
 		theQueue[front]="-1";
 		front++;
-		numOfItems--;
+		size--;
+		suffle();
 		}
 		else{
 			System.out.println("Sorry the queue is empty");
 		}
 	}
+	private void suffle(){
+		if(front != rear){
+			for(int i =0;i<rear-1;i++){
+				theQueue[i] = theQueue[i+1];
+				theQueue[i+1] = "-1";
+			}
+			front--;
+			rear--;
+			
+		}
+	}
 	
 	public void peek(){
-		if(front>0 && front <queueSize)
+		if(front>=0 && rear <CAPACITY)
 			System.out.println("Peeking : "+theQueue[front]);
 		else {
 			System.out.println("Peeking : Queue is empty");
 		}
 	}
 	
-	public static void displayTheQueue(String[] queueArray){
+	public int size(){
+		return size;
+	}
+	
+	public boolean isEmpty(){
+		if(size == 0)
+			return true;
+		return false;
+	}
+	
+	public static void displayTheQueue(){
 		
 		for(int n = 0; n < 61; n++)System.out.print("-");
 		
 		System.out.println();
 		
-		for(int n = 0; n < queueSize; n++){
+		for(int n = 0; n < CAPACITY; n++){
 			
 			System.out.format("| %2s "+ " ", n);
 			
@@ -131,12 +101,12 @@ public class TheQueue {
 		
 		System.out.println();
 		
-		for(int n = 0; n < queueSize; n++){
+		for(int n = 0; n < CAPACITY; n++){
 			
 			
-			if(queueArray[n].equals("-1")) System.out.print("|     ");
+			if(theQueue[n].equals("-1")) System.out.print("|     ");
 			
-			else System.out.print(String.format("| %2s "+ " ", queueArray[n]));
+			else System.out.print(String.format("| %2s "+ " ", theQueue[n]));
 			
 		}
 		
